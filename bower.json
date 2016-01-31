@@ -1,17 +1,16 @@
 {
-  "name": "adminr-sb-admin",
+  "name": "adminr-basic-layout",
   "authors": [
     "jakubknejzlik <jakub.knejzlik@gmail.com>"
   ],
   "description": "adminr SBAdmin layout module",
   "main": [
-    "dist/index.js",
-    "dist/styles.css"
+    "dist/index.js"
   ],
   "moduleType": [],
   "keywords": [
     "adminr",
-    "sb-admin",
+    "basic",
     "layout"
   ],
   "license": "MIT",
