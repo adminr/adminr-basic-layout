@@ -21,17 +21,25 @@ mod.provider('AdminrBasicLayout',['$stateProvider',($stateProvider)->
   class Page
     icon: 'angle-right'
     constructor:(@stateName,@name,@options = {})->
+      @parent = null
       @children = []
       if @stateName
         @options.url = @options.url or ('/' + @stateName)
         if not @options.templateUrl and @options.template
           @options.template = '<div ui-view></div>'
 
-        @state = $stateProvider.state(@stateName,@options)
+
+    createState:()->
+      @state = $stateProvider.state(@getStateName(),@options)
+
+    getStateName:()->
+      return @stateName
 
     addPage:(state,name,url,templateUrl)->
       page = new Page(state,name,url,templateUrl)
       @children.push(page)
+      page.parent = @
+      page.createState()
       return page
 
     setIcon:(icon)->

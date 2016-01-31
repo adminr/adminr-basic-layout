@@ -32,21 +32,30 @@ mod.provider('AdminrBasicLayout', [
         this.stateName = stateName;
         this.name = name1;
         this.options = options != null ? options : {};
+        this.parent = null;
         this.children = [];
         if (this.stateName) {
           this.options.url = this.options.url || ('/' + this.stateName);
           if (!this.options.templateUrl && this.options.template) {
             this.options.template = '<div ui-view></div>';
           }
-          console.log(this.options);
-          this.state = $stateProvider.state(this.stateName, this.options);
         }
       }
+
+      Page.prototype.createState = function() {
+        return this.state = $stateProvider.state(this.getStateName(), this.options);
+      };
+
+      Page.prototype.getStateName = function() {
+        return this.stateName;
+      };
 
       Page.prototype.addPage = function(state, name, url, templateUrl) {
         var page;
         page = new Page(state, name, url, templateUrl);
         this.children.push(page);
+        page.parent = this;
+        page.createState();
         return page;
       };
 

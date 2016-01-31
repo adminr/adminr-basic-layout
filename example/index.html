@@ -19,7 +19,12 @@
 <h4>Page structure</h4>
 <ul>
     <li ng-repeat="page in homePage.children">
-        <a ui-sref="{{page.stateName}}">{{page.name}}</a>
+        <a ui-sref="{{page.getStateName()}}">{{page.name}} ({{page.getStateName()}})</a>
+        <ul>
+            <li ng-repeat="page in page.children">
+                <a ui-sref="{{page.getStateName()}}">{{page.name}} ({{page.getStateName()}})</a>
+            </li>
+        </ul>
     </li>
 </ul>
 
