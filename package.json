@@ -1,6 +1,6 @@
 {
   "name": "adminr-basic-layout",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "devDependencies": {
     "browser-sync": "^2.11.1",
     "browserify": "^11.0.1",
@@ -12,9 +12,9 @@
     "partialify": "^3.1.5"
   },
   "scripts": {
-    "build-styles":"[ ! -d styles ] || cat ./styles/* | ./node_modules/.bin/node-sass > ./dist/styles.css",
-    "build-coffeescripts":"browserify -t coffeeify -t [ browserify-ngannotate --x .coffee ] -t partialify index.coffee -o dist/index.js",
-    "prebuild":"[ -d dist ] || mkdir dist",
+    "build-styles": "[ ! -d styles ] || cat ./styles/* | ./node_modules/.bin/node-sass > ./dist/styles.css",
+    "build-coffeescripts": "browserify -t coffeeify -t [ browserify-ngannotate --x .coffee ] -t partialify index.coffee -o dist/index.js",
+    "prebuild": "[ -d dist ] || mkdir dist",
     "build": "npm run build-styles;npm run build-coffeescripts",
     "serve-example": "./node_modules/.bin/browser-sync start --server --startPath example --files \"dist/*,example/*\" --reload-delay 500",
     "watch": "./node_modules/.bin/nodemon -x 'npm run build' -e html,coffee,scss --ignore dist --ignore example",
