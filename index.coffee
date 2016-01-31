@@ -27,7 +27,6 @@ mod.provider('AdminrBasicLayout',['$stateProvider',($stateProvider)->
         if not @options.templateUrl and @options.template
           @options.template = '<div ui-view></div>'
 
-        console.log(@options)
         @state = $stateProvider.state(@stateName,@options)
 
     addPage:(state,name,url,templateUrl)->
