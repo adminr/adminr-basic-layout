@@ -1,0 +1,34 @@
+{
+  "name": "adminr-sb-admin",
+  "authors": [
+    "jakubknejzlik <jakub.knejzlik@gmail.com>"
+  ],
+  "description": "adminr SBAdmin layout module",
+  "main": [
+    "dist/index.js",
+    "dist/styles.css"
+  ],
+  "moduleType": [],
+  "keywords": [
+    "adminr",
+    "sb-admin",
+    "layout"
+  ],
+  "license": "MIT",
+  "homepage": "www.knejzlik.cz",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "example"
+  ],
+  "dependencies": {
+    "adminr-login": "~0.1.6",
+    "adminr-core": "~0.0.8",
+    "adminr-datasources": "~0.1.6",
+    "angular-ui-router": "~0.2.15",
+    "adminr-bootstrap": "~0.0.5"
+  }
+}
