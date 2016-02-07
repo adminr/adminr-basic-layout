@@ -19,15 +19,22 @@
 <h4>Page structure</h4>
 <ul>
     <li ng-repeat="page in homePage.children">
-        <a ui-sref="{{page.getStateName()}}">{{page.name}} ({{page.getStateName()}})</a>
+        <a ui-sref="{{page.getStateName()}}">{{page.name}} ({{page.getStateName()}}{{$state.current.page === page?' - current':''}})</a>
         <ul>
             <li ng-repeat="page in page.children">
-                <a ui-sref="{{page.getStateName()}}">{{page.name}} ({{page.getStateName()}})</a>
+                <a ui-sref="{{page.getStateName()}}">{{page.name}} ({{page.getStateName()}}{{$state.current.page === page?' - current':''}})</a>
             </li>
         </ul>
     </li>
 </ul>
 
+<hr />
+
+current state: {{$state.current.name}} {{$state.current.page.getParentPages().length}}
+
+<hr />
+
+breadcrumbs: <span ng-repeat="parentPage in $state.current.page.getParentPages()">{{parentPage.name}} /</span> {{$state.current.page.name}}
 
 <hr />
 <div ui-view></div>

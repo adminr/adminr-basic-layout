@@ -12,7 +12,8 @@ mod.config([
 ]);
 
 mod.run([
-  '$rootScope', '$window', function($rootScope, $window) {
+  '$rootScope', '$window', '$state', function($rootScope, $window, $state) {
+    $rootScope.$state = $state;
     return $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       if (toState.external) {
         event.preventDefault();
@@ -28,10 +29,10 @@ mod.provider('AdminrBasicLayout', [
     Page = (function() {
       Page.prototype.icon = 'angle-right';
 
-      function Page(stateName, name1, options) {
+      function Page(stateName, name1, options1) {
         this.stateName = stateName;
         this.name = name1;
-        this.options = options != null ? options : {};
+        this.options = options1 != null ? options1 : {};
         this.parent = null;
         this.children = [];
         if (this.stateName) {
@@ -43,7 +44,10 @@ mod.provider('AdminrBasicLayout', [
       }
 
       Page.prototype.createState = function() {
-        return this.state = $stateProvider.state(this.getStateName(), this.options);
+        var options;
+        options = angular.copy(this.options);
+        options.page = this;
+        return this.state = $stateProvider.state(this.getStateName(), options);
       };
 
       Page.prototype.getStateName = function() {
@@ -66,6 +70,18 @@ mod.provider('AdminrBasicLayout', [
 
       Page.prototype.getIcon = function() {
         return this.icon;
+      };
+
+      Page.prototype.getParentPages = function(array) {
+        var ref;
+        if (array == null) {
+          array = [];
+        }
+        if ((ref = this.parent) != null ? ref.name : void 0) {
+          array.push(this.parent);
+          this.parent.getParentPages(array);
+        }
+        return array;
       };
 
       return Page;

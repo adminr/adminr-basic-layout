@@ -8,7 +8,8 @@ mod.config(['$stateProvider', '$urlRouterProvider',($stateProvider, $urlRouterPr
   $urlRouterProvider.otherwise('/')
 ])
 
-mod.run(['$rootScope','$window',($rootScope,$window)->
+mod.run(['$rootScope','$window','$state',($rootScope,$window,$state)->
+  $rootScope.$state = $state
   $rootScope.$on('$stateChangeStart',(event, toState, toParams, fromState, fromParams)->
     if toState.external
       event.preventDefault()
@@ -30,7 +31,9 @@ mod.provider('AdminrBasicLayout',['$stateProvider',($stateProvider)->
 
 
     createState:()->
-      @state = $stateProvider.state(@getStateName(),@options)
+      options = angular.copy(@options)
+      options.page = @
+      @state = $stateProvider.state(@getStateName(),options)
 
     getStateName:()->
       return @stateName
@@ -47,6 +50,12 @@ mod.provider('AdminrBasicLayout',['$stateProvider',($stateProvider)->
       return @
     getIcon:()->
       return @icon
+
+    getParentPages:(array = [])->
+      if @parent?.name
+        array.push(@parent)
+        @parent.getParentPages(array)
+      return array
 
   class AdminrBacisLayout
 
