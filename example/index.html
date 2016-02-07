@@ -30,11 +30,11 @@
 
 <hr />
 
-current state: {{$state.current.name}} {{$state.current.page.getParentPages().length}}
+current state: {{$page.name}} {{$page.getParentPages().length}}
 
 <hr />
 
-breadcrumbs: <span ng-repeat="parentPage in $state.current.page.getParentPages()">{{parentPage.name}} /</span> {{$state.current.page.name}}
+breadcrumbs: <span ng-repeat="parentPage in $page.getParentPages()">{{parentPage.name}} /</span> {{$page.name}}
 
 <hr />
 <div ui-view></div>

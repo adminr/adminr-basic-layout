@@ -17,8 +17,9 @@ mod.run([
     return $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       if (toState.external) {
         event.preventDefault();
-        return $window.open(toState.url, '_blank');
+        $window.open(toState.url, '_blank');
       }
+      return $rootScope.$page = toState.page;
     });
   }
 ]);

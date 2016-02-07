@@ -14,6 +14,7 @@ mod.run(['$rootScope','$window','$state',($rootScope,$window,$state)->
     if toState.external
       event.preventDefault()
       $window.open(toState.url, '_blank')
+    $rootScope.$page = toState.page
   )
 ])
 
