@@ -3,13 +3,13 @@ mod = angular.module('adminr-basic-layout',['ui.router'])
 
 mod.run(['$state', angular.noop]);
 
-
 mod.config(['$stateProvider', '$urlRouterProvider',($stateProvider, $urlRouterProvider)->
   $urlRouterProvider.otherwise('/')
 ])
 
-mod.run(['$rootScope','$window','$state',($rootScope,$window,$state)->
+mod.run(['$rootScope','$window','$state','AdminrBasicLayout',($rootScope,$window,$state,AdminrBasicLayout)->
   $rootScope.$state = $state
+  $rootScope.$homePage = AdminrBasicLayout.homePage
   $rootScope.$on('$stateChangeStart',(event, toState, toParams, fromState, fromParams)->
     if toState.external
       event.preventDefault()
@@ -39,8 +39,8 @@ mod.provider('AdminrBasicLayout',['$stateProvider',($stateProvider)->
     getStateName:()->
       return @stateName
 
-    addPage:(state,name,url,templateUrl)->
-      page = new Page(state,name,url,templateUrl)
+    addPage:(state,name,options)->
+      page = new Page(state,name,options)
       @children.push(page)
       page.parent = @
       page.createState()
@@ -54,7 +54,7 @@ mod.provider('AdminrBasicLayout',['$stateProvider',($stateProvider)->
 
     getParentPages:(array = [])->
       if @parent?.name
-        array.push(@parent)
+        array.unshift(@parent)
         @parent.getParentPages(array)
       return array
 
@@ -63,12 +63,15 @@ mod.provider('AdminrBasicLayout',['$stateProvider',($stateProvider)->
     homePage: new Page()
 
     setHomePage: (name,templateUrl)->
-      return @addPage('home',name,{url:'/',templateUrl:templateUrl}).setIcon('dashboard')
+      @homePage = new Page('home',name,{url:'/',templateUrl:templateUrl})
+      @homePage.setIcon('dashboard')
+      @homePage.createState()
+      return @homePage
 
-    addPage: (state,name,url,templateUrl)->
+    addPage: (state,name,options)->
       if not @homePage
         throw new Error('AdminrBasicLayout set home page before adding another pages')
-      return @homePage.addPage(state,name,url,templateUrl)
+      return @homePage.addPage(state,name,options)
 
     $get:()->
       return @

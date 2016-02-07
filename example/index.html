@@ -18,7 +18,10 @@
 
 <h4>Page structure</h4>
 <ul>
-    <li ng-repeat="page in homePage.children">
+    <li ng-class="{active:$homePage === $page}">
+        <a ui-sref="home">{{$homePage.name}} {{$homePage.getStateName()}}</a>
+    </li>
+    <li ng-repeat="page in $homePage.children">
         <a ui-sref="{{page.getStateName()}}">{{page.name}} ({{page.getStateName()}}{{$state.current.page === page?' - current':''}})</a>
         <ul>
             <li ng-repeat="page in page.children">
@@ -34,7 +37,7 @@ current state: {{$page.name}} {{$page.getParentPages().length}}
 
 <hr />
 
-breadcrumbs: <span ng-repeat="parentPage in $page.getParentPages()">{{parentPage.name}} /</span> {{$page.name}}
+breadcrumbs: <span ng-repeat="parentPage in $page.getParentPages()"><a ui-sref="{{parentPage.getStateName()}}">{{parentPage.name}}</a> / </span> {{$page.name}}
 
 <hr />
 <div ui-view></div>

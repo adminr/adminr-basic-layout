@@ -12,8 +12,9 @@ mod.config([
 ]);
 
 mod.run([
-  '$rootScope', '$window', '$state', function($rootScope, $window, $state) {
+  '$rootScope', '$window', '$state', 'AdminrBasicLayout', function($rootScope, $window, $state, AdminrBasicLayout) {
     $rootScope.$state = $state;
+    $rootScope.$homePage = AdminrBasicLayout.homePage;
     return $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
       if (toState.external) {
         event.preventDefault();
@@ -55,9 +56,9 @@ mod.provider('AdminrBasicLayout', [
         return this.stateName;
       };
 
-      Page.prototype.addPage = function(state, name, url, templateUrl) {
+      Page.prototype.addPage = function(state, name, options) {
         var page;
-        page = new Page(state, name, url, templateUrl);
+        page = new Page(state, name, options);
         this.children.push(page);
         page.parent = this;
         page.createState();
@@ -79,7 +80,7 @@ mod.provider('AdminrBasicLayout', [
           array = [];
         }
         if ((ref = this.parent) != null ? ref.name : void 0) {
-          array.push(this.parent);
+          array.unshift(this.parent);
           this.parent.getParentPages(array);
         }
         return array;
@@ -94,17 +95,20 @@ mod.provider('AdminrBasicLayout', [
       AdminrBacisLayout.prototype.homePage = new Page();
 
       AdminrBacisLayout.prototype.setHomePage = function(name, templateUrl) {
-        return this.addPage('home', name, {
+        this.homePage = new Page('home', name, {
           url: '/',
           templateUrl: templateUrl
-        }).setIcon('dashboard');
+        });
+        this.homePage.setIcon('dashboard');
+        this.homePage.createState();
+        return this.homePage;
       };
 
-      AdminrBacisLayout.prototype.addPage = function(state, name, url, templateUrl) {
+      AdminrBacisLayout.prototype.addPage = function(state, name, options) {
         if (!this.homePage) {
           throw new Error('AdminrBasicLayout set home page before adding another pages');
         }
-        return this.homePage.addPage(state, name, url, templateUrl);
+        return this.homePage.addPage(state, name, options);
       };
 
       AdminrBacisLayout.prototype.$get = function() {
