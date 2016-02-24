@@ -1,6 +1,7 @@
 mod = angular.module('adminr-basic-layout',['ui.router'])
 
 
+# https://github.com/angular-ui/ui-router/issues/679
 mod.run(['$state', angular.noop]);
 
 mod.config(['$stateProvider', '$urlRouterProvider',($stateProvider, $urlRouterProvider)->
