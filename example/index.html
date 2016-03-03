@@ -19,13 +19,18 @@
 <h4>Page structure</h4>
 <ul>
     <li ng-class="{active:$homePage === $page}">
-        <a ui-sref="home">{{$homePage.name}} {{$homePage.getStateName()}}</a>
+        <a ui-sref="home">{{$homePage.name}} {{$homePage.getStateName()}} ({{$homePage.getStateName()}}{{$homePage.isCurrent($page)?' - current':''}})</a>
+        <ul>
+            <li ng-repeat="page in $homePage.children">
+                <a ui-sref="{{page.getStateName()}}">{{page.name}} ({{page.getStateName()}}{{page.isCurrent($page)?' - current':''}})</a>
+            </li>
+        </ul>
     </li>
-    <li ng-repeat="page in $homePage.children">
-        <a ui-sref="{{page.getStateName()}}">{{page.name}} ({{page.getStateName()}}{{$state.current.page === page?' - current':''}})</a>
+    <li ng-repeat="page in $rootPage.children">
+        <a ui-sref="{{page.getStateName()}}">{{page.name}} ({{page.getStateName()}}{{page.isCurrent($page)?' - current':''}})</a>
         <ul>
             <li ng-repeat="page in page.children">
-                <a ui-sref="{{page.getStateName()}}">{{page.name}} ({{page.getStateName()}}{{$state.current.page === page?' - current':''}})</a>
+                <a ui-sref="{{page.getStateName()}}">{{page.name}} ({{page.getStateName()}}{{page.isCurrent($page)?' - current':''}})</a>
             </li>
         </ul>
     </li>

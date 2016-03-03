@@ -10,6 +10,7 @@ mod.config(['$stateProvider', '$urlRouterProvider',($stateProvider, $urlRouterPr
 
 mod.run(['$rootScope','$window','$state','AdminrBasicLayout',($rootScope,$window,$state,AdminrBasicLayout)->
   $rootScope.$state = $state
+  $rootScope.$rootPage = AdminrBasicLayout.rootPage
   $rootScope.$homePage = AdminrBasicLayout.homePage
   $rootScope.$on('$stateChangeStart',(event, toState, toParams, fromState, fromParams)->
     if toState.external
@@ -59,9 +60,15 @@ mod.provider('AdminrBasicLayout',['$stateProvider',($stateProvider)->
         @parent.getParentPages(array)
       return array
 
+    isCurrent:(page)->
+      if not page
+        return no
+      return page is @ or @ in page.getParentPages()
+
   class AdminrBacisLayout
 
-    homePage: new Page()
+    rootPage: new Page()
+    homePage: null
 
     setHomePage: (name,templateUrl)->
       @homePage = new Page('home',name,{url:'/',templateUrl:templateUrl})
@@ -70,9 +77,9 @@ mod.provider('AdminrBasicLayout',['$stateProvider',($stateProvider)->
       return @homePage
 
     addPage: (state,name,options)->
-      if not @homePage
+      if not @rootPage
         throw new Error('AdminrBasicLayout set home page before adding another pages')
-      return @homePage.addPage(state,name,options)
+      return @rootPage.addPage(state,name,options)
 
     $get:()->
       return @
